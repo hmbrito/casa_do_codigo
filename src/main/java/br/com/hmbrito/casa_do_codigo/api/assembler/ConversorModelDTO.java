@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
 /**
  * Rotinas de conversão de Domain (Entidade) para DTO
  * <br>
- * Rotinas de conversão de Input para Domain (Entidade)
+ * Rotinas de conversão de Request para Domain (Entidade)
  *
  * @param <E> Entidade (Autor.java)
  * @param <R> Response (AutorResponse.java)
- * @param <I> Input (AutorInput.java)
+ * @param <I> Input (AutorRequest.java)
  * @author hmbri
  */
 public class ConversorModelDTO<E, R, I> {

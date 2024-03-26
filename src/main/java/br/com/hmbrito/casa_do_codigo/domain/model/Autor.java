@@ -20,18 +20,16 @@ public class Autor {
     @Column(name = "nome", nullable = false, length = 60)
     private String nome;
 
-    @NotBlank
     @Email
     @Column(name = "email", nullable = false, length = 60)
     private String email;
 
     @NotBlank
     @Column(name = "descricao", nullable = false, length = 400)
-    @Size(min = 1, max = 400)
+    @Size(max = 400)
     private String descricao;
 
     @NotNull
-
     @Column(name = "data_registro", nullable = false)
     private OffsetDateTime dataRegistro;
 

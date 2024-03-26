@@ -8,12 +8,12 @@ public class AutorRequest {
     @NotBlank
     private String nome;
 
-    @Email
     @NotBlank
+    @Email
     private String email;
 
     @NotBlank
-    @Size(min = 1, max = 400)
+    @Size(max = 400)
     private String descricao;
 
     public String getNome() {

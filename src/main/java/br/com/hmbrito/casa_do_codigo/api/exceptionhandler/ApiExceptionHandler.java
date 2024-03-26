@@ -1,6 +1,8 @@
 package br.com.hmbrito.casa_do_codigo.api.exceptionhandler;
 
 import br.com.hmbrito.casa_do_codigo.domain.exception.NegocioException;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -40,6 +42,23 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         problemDetail.setDetail("Um detalhe sobre o erro.");
 
         problemDetail.setType(URI.create("https://deveficiente.com/erros/campos-invalidos"));
+
+        // temos um problema aqui, precisamos de um List<String> para lidar com a situacao abaixo
+//        @NotBlank
+//        @Email
+//        private String email;
+
+//        {
+//            "nome": "",
+//            "email": " ",
+//            "descricao": ""
+//        }
+
+// Duplicate key email (attempted merging values eh de preenchimento obrigatorio and deve ser um e-mail valido
+//      email, eh de preenchimento obrigatorio
+//      email, deve ser um e-mail valido
+
+
         Map<String, String> invalidFields = ex.getBindingResult().getAllErrors()
                 .stream()
                 .collect(Collectors.toMap(objectError -> ((FieldError) objectError).getField(),
@@ -54,7 +73,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public ProblemDetail handleDataIntegrity(DataIntegrityViolationException e) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.CONFLICT);
         problemDetail.setTitle("Recurso atualmente em uso, verifique.");
-        problemDetail.setType(URI.create("https://algatransito.com/erros/recurso-em-uso"));
+        problemDetail.setType(URI.create("https://deveficiente.com/erros/recurso-em-uso"));
 
         return problemDetail;
     }
