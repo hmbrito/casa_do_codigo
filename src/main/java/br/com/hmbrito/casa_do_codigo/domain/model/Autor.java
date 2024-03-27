@@ -14,7 +14,7 @@ public class Autor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @NotBlank
     @Column(name = "nome", nullable = false, length = 60)
@@ -22,7 +22,7 @@ public class Autor {
 
     @NotBlank
     @Email
-    @Column(name = "email", nullable = false, length = 60)
+    @Column(name = "email", nullable = false, unique=true, length = 60)
     private String email;
 
     @NotBlank
@@ -34,16 +34,26 @@ public class Autor {
     @Column(name = "data_registro", nullable = false)
     private OffsetDateTime dataRegistro;
 
+    @Deprecated
+    public Autor() {
+    }
+
+    public Autor(String nome, String email, String descricao) {
+        this.nome = nome;
+        this.email = email;
+        this.descricao = descricao;
+    }
+
     @PrePersist
     public void onNewAutor() {
         dataRegistro = OffsetDateTime.now();
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
