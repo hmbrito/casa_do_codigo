@@ -20,6 +20,7 @@ public class Autor {
     @Column(name = "nome", nullable = false, length = 60)
     private String nome;
 
+    @NotBlank
     @Email
     @Column(name = "email", nullable = false, length = 60)
     private String email;

@@ -1,8 +1,6 @@
 package br.com.hmbrito.casa_do_codigo.api.exceptionhandler;
 
 import br.com.hmbrito.casa_do_codigo.domain.exception.NegocioException;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -16,6 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.net.URI;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -40,29 +39,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemDetail problemDetail = ProblemDetail.forStatus(status);
         problemDetail.setTitle("Um ou mais campos estão inválidos, verifique.");
         problemDetail.setDetail("Um detalhe sobre o erro.");
-
         problemDetail.setType(URI.create("https://deveficiente.com/erros/campos-invalidos"));
 
-        // temos um problema aqui, precisamos de um List<String> para lidar com a situacao abaixo
-//        @NotBlank
-//        @Email
-//        private String email;
-
-//        {
-//            "nome": "",
-//            "email": " ",
-//            "descricao": ""
-//        }
-
-// Duplicate key email (attempted merging values eh de preenchimento obrigatorio and deve ser um e-mail valido
-//      email, eh de preenchimento obrigatorio
-//      email, deve ser um e-mail valido
-
+        AtomicInteger i = new AtomicInteger(0);
 
         Map<String, String> invalidFields = ex.getBindingResult().getAllErrors()
                 .stream()
-                .collect(Collectors.toMap(objectError -> ((FieldError) objectError).getField(),
+                .collect(Collectors.toMap(objectError -> ((FieldError) objectError).getField() + "(" + i.incrementAndGet() + ")",
                         objectError -> messageSource.getMessage(objectError, LocaleContextHolder.getLocale())));
+
 
         problemDetail.setProperty("invalidFields", invalidFields);
 
