@@ -49,9 +49,20 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                         objectError -> messageSource.getMessage(objectError, LocaleContextHolder.getLocale())));
 
 
+//        Function<ObjectError, String> getFieldName = objectError -> ((FieldError) objectError).getField() + "(" + i.incrementAndGet() + ")";
+//        Function<ObjectError, String> getDescriptionError = objectError -> messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
+//
+//        Map<String, String> invalidFields = ex.getBindingResult().getAllErrors()
+//                .stream()
+//                .collect(Collectors.toMap(getFieldName, getDescriptionError));
+
         problemDetail.setProperty("invalidFields", invalidFields);
 
         return handleExceptionInternal(ex, problemDetail, headers, status, request);
+    }
+
+    private Object inserirComMerge(String fieldName, String descriptionError, Map<String, String> invalidFields) {
+        return invalidFields.merge(fieldName, descriptionError, (valorAtual, valorNovo) -> invalidFields.get(fieldName) + ", " + descriptionError);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)

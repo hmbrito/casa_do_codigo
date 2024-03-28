@@ -12,9 +12,6 @@ public class AutorResponse implements Serializable {
     private String email;
     private String descricao;
 
-    public AutorResponse() {
-    }
-
     public String getNome() {
         return nome;
     }
